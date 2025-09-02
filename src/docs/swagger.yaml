@@ -1,0 +1,66 @@
+openapi: 3.0.0
+info:
+  title: Smart Home Authentication API
+  version: 1.0.0
+  description: Handles user creation and login.
+
+servers:
+  - url: http://localhost:3012/api/v1
+
+tags:
+  - name: User
+
+paths:
+  /user/create:
+    post:
+      tags: [User]
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, email, password]
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        201:
+          description: User created
+          content:
+            application/json:
+              example:
+                message: User created successfully!
+                userId: 1
+
+  /user/login:
+    post:
+      tags: [User]
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: Successful login
+          content:
+            application/json:
+              example:
+                message: User logged in successfully!
+                token: eyJhbGciOi...
+
+components: {}

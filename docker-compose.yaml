@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    container_name: auth_postgres
+    restart: always
+    ports:
+      - '5433:${DB_PORT}' # external 5433 → container DB_PORT
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - auth_pgdata:/var/lib/postgresql/data
+
+  app:
+    container_name: auth_service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '${PORT}:${PORT}'
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: always
+
+volumes:
+  auth_pgdata:
